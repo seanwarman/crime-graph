@@ -1,67 +1,27 @@
-import { combineReducers } from 'redux'
-import {
-  SELECT_SUBREDDIT,
-  INVALIDATE_SUBREDDIT,
-  REQUEST_POSTS,
-  RECEIVE_POSTS,
-} from './actions'
-
-function selectedSubreddit(state = 'reactjs', action) {
-  switch (action.type) {
-    case SELECT_SUBREDDIT:
-      return action.subreddit
-    default:
-      return state
-  }
+const initialState = {
+  lat: null,
+  lng: null,
+  date: '2019-08'
 }
 
-function posts(
-  state = {
-    isFetching: false,
-    didInvalidate: false,
-    items: []
-  },
-  action
-) {
-  switch (action.type) {
-    case INVALIDATE_SUBREDDIT:
-      return Object.assign({}, state, {
-        didInvalidate: true
-      })
-    case REQUEST_POSTS:
-      return Object.assign({}, state, {
-        isFetching: true,
-        didInvalidate: false
-      })
-    case RECEIVE_POSTS:
-      return Object.assign({}, state, {
-        isFetching: false,
-        didInvalidate: false,
-        items: action.posts,
-        lastUpdated: action.receivedAt
-      })
-    default:
-      return state
-  }
-}
 
-function postsBySubreddit(state = {}, action) {
+
+
+export default function crimeGraph(state, action) {
+  if(typeof state === 'undefined') {
+    return initialState
+  }
+
   switch(action.type) {
-    case INVALIDATE_SUBREDDIT:
-    case RECEIVE_POSTS:
-    case REQUEST_POSTS:
+    case 'FETCH_CRIME':
       return Object.assign({}, state, {
-        [action.subreddit]: posts(state[action.subreddit], action)
+        lng:  action.lng,
+        lat:  action.lat,
+        date: action.date
       })
     default:
       return state
+
   }
+
 }
-
-const rootReducer = combineReducers({
-  postsBySubreddit,
-  selectedSubreddit
-})
-
-export default rootReducer
-
