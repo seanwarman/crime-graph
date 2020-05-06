@@ -3,7 +3,7 @@ const GoogleFontsPlugin = require("@beyonk/google-fonts-webpack-plugin")
 const HtmlWebpackPlugin =  require('html-webpack-plugin');
 
 module.exports = {
-  entry : './src/index.js',
+  entry : './src/App.js',
   devServer: {
     port: 3000
   },

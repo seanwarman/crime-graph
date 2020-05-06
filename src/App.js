@@ -1,9 +1,13 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
+
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from './reducers'
-import { fetchPosts } from './actions'
+
+import Home from './views/Home'
+import './App.css'
 
 const loggerMiddleware = createLogger()
 
@@ -17,14 +21,11 @@ const store = createStore(
 
 export default class App extends React.Component {
 
-  componentDidMount() {
-    store.dispatch(fetchPosts('reactjs')).then(() => console.log(store.getState()))
-  }
-
   render() {
     return (
-      <div>Hi there!</div>
+      <Home dispatch={store.dispatch} getState={store.getState} />
     )
   }
 }
 
+ReactDOM.render(<App />, document.getElementById('root'))
