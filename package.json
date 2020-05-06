@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "babel":{
-    "presets" : [
+  "babel": {
+    "presets": [
       "@babel/preset-env",
       "@babel/preset-react"
     ]
@@ -18,9 +18,13 @@
   "license": "ISC",
   "dependencies": {
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
+    "@beyonk/google-fonts-webpack-plugin": "^1.2.3",
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",

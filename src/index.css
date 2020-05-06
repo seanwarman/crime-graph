@@ -1,0 +1,90 @@
+html, body {
+  display: relative;
+  font-family: 'Nunito', monospace;
+  color: #424242;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.1rem;
+  background: #95a8d4;
+  padding-bottom: 90px;
+}
+
+body > div {
+  max-width: 750px;
+  margin: 0 370px 0 0;
+}
+
+@media(max-width: 1300px) {
+  body > div {
+    /* max-width: 560px; */
+    font-size: 1.8em;
+  }
+}
+
+pre {
+  overflow-x: scroll;
+  background: #2b2b2b;
+  padding: 0.6rem;
+  border-radius: 5px;
+  color: #e6d1a1;
+  transition: all .3s;
+}
+
+pre > code {
+  font-size: 0.9em;
+}
+
+code {
+  background: #2b2b2b;
+  padding: .1em .4em;
+  border-radius: 2px;
+  color: #e6d1a1;
+  font-size: .8em;
+}
+
+a {
+  color: #ffffff;
+}
+
+footer {
+  display: absolute;
+  bottom: 0;
+}
+
+#loading-text {
+  height: 70vh;
+  display: flex;
+  align-items: center;
+}
+
+.sider {
+  right: 50px;
+  top: 16px;
+}
+.back {
+  left: 40px;
+  top: 40px;
+}
+@media (min-width: 1701px) {
+  .sider {
+    position: absolute;
+  }
+  .back {
+    position: absolute;
+  }
+}
+@media (max-width: 1700px) {
+  .sider {
+    font-size: 1.4em;
+  }
+  .sider li {
+    margin: 1em 0;
+  }
+  .sider ul {
+    margin-top: 3em;
+  }
+  body > div {
+    margin: 0px 50px;
+  }
+}

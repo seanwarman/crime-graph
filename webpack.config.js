@@ -1,8 +1,12 @@
-var path = require('path');
-var HtmlWebpackPlugin =  require('html-webpack-plugin');
+const path = require('path');
+const GoogleFontsPlugin = require("@beyonk/google-fonts-webpack-plugin")
+const HtmlWebpackPlugin =  require('html-webpack-plugin');
 
 module.exports = {
   entry : './src/index.js',
+  devServer: {
+    port: 3000
+  },
   output : {
     path : path.resolve(__dirname , 'dist'),
     filename: 'index_bundle.js'
@@ -16,8 +20,12 @@ module.exports = {
   mode:'development',
   plugins : [
     new HtmlWebpackPlugin ({
-      template : 'src/index.html'
-    })
+      template : 'public/index.html',
+      favicon: 'public/policeman.ico'
+    }),
+    new GoogleFontsPlugin({fonts: [
+      { family: "Nunito" },
+    ]})
   ]
 
 }
