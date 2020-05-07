@@ -1,6 +1,6 @@
 const initialState = {
-  lat: null,
-  lng: null,
+  lat: '52.629729',
+  lng: '-1.131592',
   date: '2019-08',
   crime: [],
   message: '',

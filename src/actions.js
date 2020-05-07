@@ -22,13 +22,13 @@ export function crimeReqFailed(message) {
   }
 }
 
-export function fetchCrimes(lng, lat, date) {
+export function fetchCrimes(lat, lng, date) {
 
   return function(dispatch) {
-    dispatch(crimeRequest(lng, lat, date))
+    dispatch(crimeRequest(lat, lng, date))
 
     return axios.get(
-      `https://data.police.uk/api/crimes-street/all-crime?lat=52.629729&lng=-1.131592&date=2019-08`
+      `https://data.police.uk/api/crimes-street/all-crime?lat=${lat}&lng=${lng}&date=${date}`
     ).then(
       res => res.data,
       err => console.log('err: ', err)
