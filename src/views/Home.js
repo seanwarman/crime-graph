@@ -46,55 +46,62 @@ class Home extends React.Component {
   render() {
 
     return (
-      <>
-      lng:
-      <input
-        onChange={e => this.handleChange('lng', e.target.value)}
-        type="number"
-        value={this.props.lng} 
-      />
+      <div>
+        <h1
+          style={{color: 'white'}}
+        >Crime Graph!</h1>
+        <div style={{
+          marginBottom: '20px'
+          }}>
+          lng:
+          <input
+            onChange={e => this.handleChange('lng', e.target.value)}
+            type="number"
+            value={this.props.lng} 
+          />
 
-      lat:
-      <input
-        onChange={e => this.handleChange('lat', e.target.value)}
-        type="number"
-        value={this.props.lat} 
-      />
+          lat:
+          <input
+            onChange={e => this.handleChange('lat', e.target.value)}
+            type="number"
+            value={this.props.lat} 
+          />
+        </div>
 
-      <Map center={[this.props.lat, this.props.lng]} zoom={12}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        <Map center={[this.props.lat, this.props.lng]} zoom={12}>
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+
+
+          {
+            this.props.crime.map(cr => {
+              return <Marker
+                key={cr.id}
+                position={[
+                  cr.location.latitude,
+                  cr.location.longitude
+                ]}
+              />
+            })
+          }
+        </Map>
+
+        <Bar 
+          data={{
+            labels: this.labelsByCategory(this.props.crime),
+            datasets: [{
+              label: 'Number of Crimes by Category',
+                data: this.dataByCategory(this.props.crime),
+                backgroundColor: 'white',
+                borderColor: 'white',
+                borderWidth: 1
+            }]
+          }}
         />
 
-      
-      {
-        this.props.crime.map(cr => {
-          return <Marker
-            key={cr.id}
-            position={[
-              cr.location.latitude,
-              cr.location.longitude
-            ]}
-          />
-        })
-      }
-      </Map>
-
-      <Bar 
-        data={{
-          labels: this.labelsByCategory(this.props.crime),
-          datasets: [{
-            label: 'Number of Crimes by Category',
-            data: this.dataByCategory(this.props.crime),
-            backgroundColor: 'white',
-            borderColor: 'white',
-            borderWidth: 1
-          }]
-        }}
-      />
-
-      </>
+      </div>
 
     )
   }

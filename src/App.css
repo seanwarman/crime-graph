@@ -8,11 +8,11 @@ html, body {
   font-size: 1.1rem;
   background: #95a8d4;
   padding-bottom: 90px;
+  height: 100%;
 }
 
 body > div {
   max-width: 750px;
-  margin: 0 370px 0 0;
 }
 
 @media(max-width: 1300px) {
@@ -20,6 +20,10 @@ body > div {
     /* max-width: 560px; */
     font-size: 1.8em;
   }
+}
+
+#root {
+  height: 100%;
 }
 
 pre {
@@ -50,6 +54,14 @@ a {
 footer {
   display: absolute;
   bottom: 0;
+}
+
+.row {
+  display: flex;
+}
+
+.col {
+  padding: 0 5px;
 }
 
 #loading-text {
