@@ -29,7 +29,7 @@ export default function crimeGraph(state, action) {
       return Object.assign({}, state, {
         crime: action.crime,
         fetching: false,
-        message: action.crime.length > 0 ? 'Crime recieved!' : 'No crime :)'
+        message: action.crime.length > 0 ? 'Crime recieved!' : 'No crime ...or too soon to say.'
       })
     case 'CRIME_FAIL':
       return Object.assign({}, state, {

@@ -112,6 +112,10 @@ class Home extends React.Component {
             <option value={4}>Four months ago</option>
             <option value={5}>Five months ago</option>
             <option value={6}>Six months ago</option>
+            <option value={7}>Seven months ago</option>
+            <option value={8}>Eight months ago</option>
+            <option value={9}>Nine months ago</option>
+            <option value={10}>Ten months ago</option>
           </select>
         </div>
         <div
