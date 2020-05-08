@@ -126,41 +126,46 @@ class Home extends React.Component {
           {this.props.message}
         </div>
 
-        <Map center={[this.state.lat, this.state.lng]} zoom={12}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          />
+        <div className="row">
+          <div className="col-2">
+            <Map center={[this.state.lat, this.state.lng]} zoom={12}>
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              ></TileLayer>
 
 
-          {
-            (this.props.crime || []).map(cr => {
-              return <Marker
-                key={cr.id}
-                position={[
-                  cr.location.latitude,
-                  cr.location.longitude
-                ]}
-              />
-            })
-          }
-        </Map>
-
-        <Bar 
-          data={{
-            labels: this.labelsByCategory(this.props.crime),
-            datasets: [{
-              label: 'Number of Crimes by Category',
-              data: this.dataByCategory(this.props.crime),
-              backgroundColor: '#95a8d4',
-              borderColor: '#95a8d4',
-              borderWidth: 1
-            }]
-          }}
-          options={{
-            startAtZero: true
-          }}
-        />
+              {
+                (this.props.crime || []).map(cr => {
+                  return <Marker
+                    key={cr.id}
+                    position={[
+                      cr.location.latitude,
+                      cr.location.longitude
+                    ]}
+                  />
+                })
+              }
+            </Map>
+          </div>
+          <div className="col-2 bar-chart">
+            <Bar 
+              data={{
+                labels: this.labelsByCategory(this.props.crime),
+                datasets: [{
+                  label: 'Number of Crimes by Category',
+                    data: this.dataByCategory(this.props.crime),
+                    backgroundColor: '#95a8d4',
+                    borderColor: '#95a8d4',
+                    borderWidth: 1
+                }]
+              }}
+              options={{
+                startAtZero: true
+              }}
+            ></Bar>
+          </div>
+        </div>
 
       </div>
 

@@ -40,6 +40,7 @@ html, body {
   font-size: 1.1rem;
   background: #f3f2e2;
   height: 100%;
+  width: 100%;
 }
 
 h1 {
@@ -53,14 +54,9 @@ h1 {
   height: 100%;
 }
 
-body > div {
-  max-width: 750px;
-}
-
-@media(max-width: 1300px) {
-  body > div {
-    font-size: 1.8em;
-  }
+body > #root {
+  max-width: 1230px;
+  width: 100%;
 }
 
 pre {
@@ -94,11 +90,12 @@ footer {
 }
 
 .row {
+  width: 100%;
   display: flex;
 }
 
-.col {
-  padding: 0 5px;
+.col-2 {
+  width: 50%;
 }
 
 #loading-text {
@@ -111,10 +108,21 @@ footer {
   right: 50px;
   top: 16px;
 }
+
 .back {
   left: 40px;
   top: 40px;
 }
+
+@media(max-width: 1300px) {
+  body > #root {
+    font-size: 1.8em;
+  }
+  .col-2 {
+    width: 100%;
+  }
+}
+
 @media (min-width: 1701px) {
   .sider {
     position: absolute;
@@ -133,7 +141,7 @@ footer {
   .sider ul {
     margin-top: 3em;
   }
-  body > div {
+  body > #root {
     margin: 0px 50px;
   }
 }
