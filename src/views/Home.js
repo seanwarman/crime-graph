@@ -49,7 +49,7 @@ class Home extends React.Component {
       <div>
         <h1
           style={{color: 'white'}}
-        >Crime Graph!</h1>
+        >Crime Graph</h1>
         <div style={{
           marginBottom: '20px'
           }}>
