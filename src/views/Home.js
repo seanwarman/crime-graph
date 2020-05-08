@@ -52,8 +52,8 @@ class Home extends React.Component {
   }
 
   handleChange(key, value) {
-    let lng  = key !== 'lng'  ? this.props.lng  : value
-    let lat  = key !== 'lat'  ? this.props.lat  : value
+    let lng = key !== 'lng' ? this.props.lng : value
+    let lat = key !== 'lat' ? this.props.lat : value
 
     this.setState({lng, lat})
 
@@ -65,6 +65,20 @@ class Home extends React.Component {
     )
 
 
+  }
+
+  handleMapMove(e) {
+    const bounds = e.sourceTarget.getBounds()
+    const { lat, lng } = bounds.getCenter()
+
+    this.setState({lng, lat})
+
+    clearTimeout(inputTimer)
+
+    inputTimer = setTimeout(() => 
+      this.props.fetchCrimes(lat, lng, this.props.date),
+      1000
+    )
   }
 
   handleDate(num) {
@@ -104,10 +118,11 @@ class Home extends React.Component {
           <select 
             id="date"
             name="datepicker"
+            defaultValue={2}
             onChange={e => this.handleDate(e.target.value)}
           >
             <option value={1}>Last month</option>
-            <option value={2} selected>Two months ago</option>
+            <option value={2}>Two months ago</option>
             <option value={3}>Three months ago</option>
             <option value={4}>Four months ago</option>
             <option value={5}>Five months ago</option>
@@ -128,7 +143,9 @@ class Home extends React.Component {
 
         <div className="row">
           <div className="col-2">
-            <Map center={[this.state.lat, this.state.lng]} zoom={12}>
+            <Map center={[this.state.lat, this.state.lng]} zoom={12} zoomControl={false}
+              onMoveend={e => this.handleMapMove(e)}
+            >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
