@@ -1,7 +1,9 @@
+import moment from 'moment'
+
 const initialState = {
   lat: '52.629729',
   lng: '-1.131592',
-  date: '2019-08',
+  date: moment().subtract(1, 'months').format('YYYY-MM'),
   crime: [],
   message: '',
   fetching: false

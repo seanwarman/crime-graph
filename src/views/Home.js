@@ -4,6 +4,7 @@ import { fetchCrimes } from '../actions'
 import { Bar } from 'react-chartjs-2'
 import './Home.css'
 import { Map, Marker, TileLayer } from 'react-leaflet'
+import moment from 'moment'
 
 class Home extends React.Component {
   constructor(props) {
@@ -47,14 +48,17 @@ class Home extends React.Component {
   }
 
   handleChange(key, value) {
-    let lng = key === 'lng' ? value : this.props.lng
-    let lat = key === 'lat' ? value : this.props.lat
+    let lng  = key !== 'lng'  ? this.props.lng  : value
+    let lat  = key !== 'lat'  ? this.props.lat  : value
+    let date = key !== 'date' ? this.props.date : moment().subtract(value, 'months').format('YYYY-MM')
 
     this.setState({lng, lat})
 
-    this.props.fetchCrimes(lat, lng, this.props.date)
+    this.props.fetchCrimes(lat, lng, date)
 
   }
+
+
 
   render() {
 
@@ -79,6 +83,19 @@ class Home extends React.Component {
             type="number"
             value={this.state.lat}
           />
+
+          <select 
+            id="date"
+            name="datepicker"
+            onChange={e => this.handleChange('date', e.target.value)}
+          >
+            <option value={1}>Last month</option>
+            <option value={2}>Two months ago</option>
+            <option value={3}>Three months ago</option>
+            <option value={4}>Four months ago</option>
+            <option value={5}>Five months ago</option>
+            <option value={6}>Six months ago</option>
+          </select>
         </div>
 
         <Map center={[this.props.lat, this.props.lng]} zoom={12}>
