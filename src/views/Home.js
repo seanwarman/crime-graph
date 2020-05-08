@@ -5,14 +5,24 @@ import { Bar } from 'react-chartjs-2'
 import './Home.css'
 import { Map, Marker, TileLayer } from 'react-leaflet'
 
-
 class Home extends React.Component {
   constructor(props) {
     super(props)
+
+    // I'm using state here to deal with the input renders
+    // only. This way they stay responsive rather than having to
+    // update with the store.
+    this.state = {
+      lng: 0,
+      lat: 0
+    }
   }
 
   componentDidMount() {
+
     this.props.fetchCrimes(this.props.lat, this.props.lng, this.props.date)
+
+    this.setState({lng: this.props.lng, lat: this.props.lat})
 
   }
 
@@ -40,7 +50,10 @@ class Home extends React.Component {
     let lng = key === 'lng' ? value : this.props.lng
     let lat = key === 'lat' ? value : this.props.lat
 
+    this.setState({lng, lat})
+
     this.props.fetchCrimes(lat, lng, this.props.date)
+
   }
 
   render() {
@@ -54,15 +67,17 @@ class Home extends React.Component {
           lng:
           <input
             onChange={e => this.handleChange('lng', e.target.value)}
+            step=".01"
             type="number"
-            value={this.props.lng} 
+            value={this.state.lng} 
           />
 
           lat:
           <input
             onChange={e => this.handleChange('lat', e.target.value)}
+            step=".01"
             type="number"
-            value={this.props.lat} 
+            value={this.state.lat}
           />
         </div>
 
@@ -96,6 +111,9 @@ class Home extends React.Component {
               borderColor: '#95a8d4',
               borderWidth: 1
             }]
+          }}
+          options={{
+            startAtZero: true
           }}
         />
 
