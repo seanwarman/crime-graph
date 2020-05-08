@@ -1,3 +1,10 @@
+/* --dark-bg-colour: #1cab72; */
+/* --mid-bg-colour: #95a8d4;; */
+/* --lightest-bg-colour: #f3f2e2; */
+/* --link-colour: #bc5eff; */
+/* --dark-fnt: #424242; */
+/* --light-fnt: white; */
+
 @font-face {
   font-family: 'Heading';
   font-style: normal;
@@ -31,13 +38,15 @@ html, body {
   flex-direction: column;
   align-items: center;
   font-size: 1.1rem;
-  background: #95a8d4;
-  padding-bottom: 90px;
+  background: #f3f2e2;
   height: 100%;
 }
 
 h1 {
   font-family: 'Heading';
+  font-size: 3.2em;
+  color: #1cab72;
+  text-shadow: 4px 4px 5px #0000002e;
 }
 
 #root {
@@ -76,11 +85,11 @@ code {
 }
 
 a {
-  color: #ffffff;
+  color: #bc5eff;
 }
 
 footer {
-  display: absolute;
+  position: relative;
   bottom: 0;
 }
 

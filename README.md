@@ -12,6 +12,7 @@ Colourful crime.
 - https://www.chartjs.org/docs/latest/charts/bar.html
 - https://blog.logrocket.com/how-to-use-react-leaflet/
 - https://google-webfonts-helper.herokuapp.com/fonts
+- https://stackoverflow.com/questions/35412137/how-to-get-access-to-webpack-dev-server-from-devices-in-local-network
 
 ## Info
 

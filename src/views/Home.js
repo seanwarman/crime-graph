@@ -47,9 +47,7 @@ class Home extends React.Component {
 
     return (
       <div>
-        <h1
-          style={{color: 'white'}}
-        >Crime Graph</h1>
+        <h1>Crime Graph</h1>
         <div style={{
           marginBottom: '20px'
           }}>
@@ -93,10 +91,10 @@ class Home extends React.Component {
             labels: this.labelsByCategory(this.props.crime),
             datasets: [{
               label: 'Number of Crimes by Category',
-                data: this.dataByCategory(this.props.crime),
-                backgroundColor: 'white',
-                borderColor: 'white',
-                borderWidth: 1
+              data: this.dataByCategory(this.props.crime),
+              backgroundColor: '#95a8d4',
+              borderColor: '#95a8d4',
+              borderWidth: 1
             }]
           }}
         />

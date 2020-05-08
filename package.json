@@ -11,7 +11,8 @@
   },
   "scripts": {
     "create": "webpack",
-    "start": "webpack-dev-server --open"
+    "startnorm": "webpack-dev-server --open",
+    "start": "webpack-dev-server --host 0.0.0.0"
   },
   "keywords": [],
   "author": "",
