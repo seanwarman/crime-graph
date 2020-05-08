@@ -6,6 +6,8 @@ import './Home.css'
 import { Map, Marker, TileLayer } from 'react-leaflet'
 import moment from 'moment'
 
+let inputTimer
+
 class Home extends React.Component {
   constructor(props) {
     super(props)
@@ -28,6 +30,7 @@ class Home extends React.Component {
   }
 
   labelsByCategory(crime) {
+    if(!crime) return []
 
     return crime.reduce((arr,cr) => {
 
@@ -38,6 +41,7 @@ class Home extends React.Component {
   }
 
   dataByCategory(crime) {
+    if(!crime) return []
 
     const categories = this.labelsByCategory(crime)
 
@@ -50,11 +54,24 @@ class Home extends React.Component {
   handleChange(key, value) {
     let lng  = key !== 'lng'  ? this.props.lng  : value
     let lat  = key !== 'lat'  ? this.props.lat  : value
-    let date = key !== 'date' ? this.props.date : moment().subtract(value, 'months').format('YYYY-MM')
 
     this.setState({lng, lat})
 
-    this.props.fetchCrimes(lat, lng, date)
+    clearTimeout(inputTimer)
+
+    inputTimer = setTimeout(() => 
+      this.props.fetchCrimes(lat, lng, this.props.date),
+      1000
+    )
+
+
+  }
+
+  handleDate(month) {
+
+    const date = moment().subtract(month, 'months').format('YYYY-MM')
+
+    this.props.fetchCrimes(this.props.lat, this.props.lng, date)
 
   }
 
@@ -87,7 +104,7 @@ class Home extends React.Component {
           <select 
             id="date"
             name="datepicker"
-            onChange={e => this.handleChange('date', e.target.value)}
+            onChange={e => this.handleDate(e.target.value)}
           >
             <option value={1}>Last month</option>
             <option value={2}>Two months ago</option>
@@ -98,7 +115,7 @@ class Home extends React.Component {
           </select>
         </div>
 
-        <Map center={[this.props.lat, this.props.lng]} zoom={12}>
+        <Map center={[this.state.lat, this.state.lng]} zoom={12}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -106,7 +123,7 @@ class Home extends React.Component {
 
 
           {
-            this.props.crime.map(cr => {
+            (this.props.crime || []).map(cr => {
               return <Marker
                 key={cr.id}
                 position={[
@@ -142,10 +159,11 @@ class Home extends React.Component {
 
 export default connect(
   state => ({ 
-    crime: state.crime,
-    lng:   state.lng,
-    lat:   state.lat,
-    date:  state.date
+    crime:   state.crime,
+    lng:     state.lng,
+    lat:     state.lat,
+    date:    state.date,
+    message: state.message
   }),
   { fetchCrimes }
 )(Home)

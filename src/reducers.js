@@ -4,6 +4,7 @@ const initialState = {
   lat: '52.629729',
   lng: '-1.131592',
   date: moment().subtract(1, 'months').format('YYYY-MM'),
+  // date: moment().format('YYYY-MM'),
   crime: [],
   message: '',
   fetching: false
@@ -23,19 +24,19 @@ export default function crimeGraph(state, action) {
         lat:  action.lat,
         date: action.date,
         fetching: true,
-        message: ''
+        message: 'Fetching crime...'
       })
     case 'RECIEVE_CRIME':
       return Object.assign({}, state, {
         crime: action.crime,
         fetching: false,
-        message: 'Crime recieved!'
+        message: action.crime.length > 0 ? 'Crime recieved!' : 'No crime :)'
       })
     case 'CRIME_FAIL':
       return Object.assign({}, state, {
         crime: [],
         fetching: false,
-        message: 'Crime not available!'
+        message: action.message
       })
     default:
       return state

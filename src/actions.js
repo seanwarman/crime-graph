@@ -31,10 +31,13 @@ export function fetchCrimes(lat, lng, date) {
       `https://data.police.uk/api/crimes-street/all-crime?lat=${lat}&lng=${lng}&date=${date}`
     ).then(
       res => res.data,
-      err => console.log('err: ', err)
-    ).then(crime =>
+      err => console.log('There was an error: ', err)
+    ).then(crime => 
+      crime ?
       dispatch(recieveCrime(crime))
+      :
+      dispatch(crimeReqFailed('There was an error fetching your crime. Maybe try a different month.'))
     )
-
   }
+
 }
