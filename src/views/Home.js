@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { fetchCrimes } from '../actions'
 import { Bar } from 'react-chartjs-2'
-import './Home.css'
 import { Map, Marker, TileLayer } from 'react-leaflet'
+import './Home.css'
 import moment from 'moment'
 
 let inputTimer
@@ -12,7 +12,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props)
 
-    // I'm using state here to deal with the input renders
+    // I'm using state here to deal with the input and map renders
     // only. This way they stay responsive rather than having to
     // update with the store.
     this.state = {
@@ -67,9 +67,9 @@ class Home extends React.Component {
 
   }
 
-  handleDate(month) {
+  handleDate(num) {
 
-    const date = moment().subtract(month, 'months').format('YYYY-MM')
+    const date = moment().subtract(num, 'months').format('YYYY-MM')
 
     this.props.fetchCrimes(this.props.lat, this.props.lng, date)
 
@@ -84,7 +84,7 @@ class Home extends React.Component {
         <h1>Crime Graph</h1>
         <div style={{
           marginBottom: '20px'
-          }}>
+        }}>
           lng:
           <input
             onChange={e => this.handleChange('lng', e.target.value)}
@@ -107,12 +107,19 @@ class Home extends React.Component {
             onChange={e => this.handleDate(e.target.value)}
           >
             <option value={1}>Last month</option>
-            <option value={2}>Two months ago</option>
+            <option value={2} selected>Two months ago</option>
             <option value={3}>Three months ago</option>
             <option value={4}>Four months ago</option>
             <option value={5}>Five months ago</option>
             <option value={6}>Six months ago</option>
           </select>
+        </div>
+        <div
+          style={{
+            marginBottom: '20px'
+          }}
+        >
+          {this.props.message}
         </div>
 
         <Map center={[this.state.lat, this.state.lng]} zoom={12}>
