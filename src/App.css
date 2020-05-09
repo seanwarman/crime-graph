@@ -39,7 +39,6 @@ html, body {
   align-items: center;
   font-size: 1.1rem;
   background: #f3f2e2;
-  height: 100%;
   width: 100%;
 }
 
@@ -87,6 +86,7 @@ a {
 footer {
   position: relative;
   bottom: 0;
+  font-size: 12px;
 }
 
 .row {
@@ -96,6 +96,10 @@ footer {
 
 .col-2 {
   width: 50%;
+}
+
+.col-4 {
+  width: 25%;
 }
 
 #loading-text {

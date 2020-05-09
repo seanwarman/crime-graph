@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+export function updateParams(lat, lng, date, zoom) {
+  return {
+    type: 'UPDATE_PARAMS',
+    lat, lng, date, zoom
+  }
+}
+
 export function crimeRequest(lat, lng, date) {
   return {
     type: 'CRIME_REQUEST',

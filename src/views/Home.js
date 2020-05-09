@@ -1,32 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchCrimes } from '../actions'
-import { Bar } from 'react-chartjs-2'
+import { updateParams, fetchCrimes } from '../actions'
+import { Bar, Pie } from 'react-chartjs-2'
 import { Map, Marker, TileLayer } from 'react-leaflet'
 import './Home.css'
 import moment from 'moment'
 
-let inputTimer
-
 class Home extends React.Component {
   constructor(props) {
     super(props)
-
-    // I'm using state here to deal with the input and map renders
-    // only. This way they stay responsive rather than having to
-    // update with the store.
-    this.state = {
-      lng: 0,
-      lat: 0
-    }
   }
 
   componentDidMount() {
 
-    this.props.fetchCrimes(this.props.lat, this.props.lng, this.props.date)
 
-    this.setState({lng: this.props.lng, lat: this.props.lat})
-
+    this.props.fetchCrimes(this.props.lat, this.props.lng, this.props.date, this.props.zoom)
   }
 
   labelsByCategory(crime) {
@@ -51,44 +39,28 @@ class Home extends React.Component {
 
   }
 
-  handleChange(key, value) {
-    let lng = key !== 'lng' ? this.props.lng : value
-    let lat = key !== 'lat' ? this.props.lat : value
-
-    this.setState({lng, lat})
-
-    clearTimeout(inputTimer)
-
-    inputTimer = setTimeout(() => 
-      this.props.fetchCrimes(lat, lng, this.props.date),
-      1000
-    )
-
-
-  }
-
-  handleMapMove(e) {
+  handleMapChange(e) {
     const bounds = e.sourceTarget.getBounds()
+    const zoom = e.sourceTarget.getBoundsZoom(bounds)
     const { lat, lng } = bounds.getCenter()
 
-    this.setState({lng, lat})
+    this.props.updateParams(lat, lng, this.props.date, zoom)
 
-    clearTimeout(inputTimer)
 
-    inputTimer = setTimeout(() => 
-      this.props.fetchCrimes(lat, lng, this.props.date),
-      1000
-    )
+    // Dont re-fetch if the lat and lng haven't changed.
+    // if(lat !== this.props.lat || lng !== this.props.lng) {
+    //   this.props.fetchCrimes(lat, lng, this.props.date, zoom)
+    // }
+
   }
 
   handleDate(num) {
 
     const date = moment().subtract(num, 'months').format('YYYY-MM')
 
-    this.props.fetchCrimes(this.props.lat, this.props.lng, date)
+    this.props.fetchCrimes(this.props.lat, this.props.lng, date, this.props.zoom)
 
   }
-
 
 
   render() {
@@ -96,55 +68,57 @@ class Home extends React.Component {
     return (
       <div>
         <h1>Crime Graph</h1>
-        <div style={{
-          marginBottom: '20px'
-        }}>
-          lng:
-          <input
-            onChange={e => this.handleChange('lng', e.target.value)}
-            step=".01"
-            type="number"
-            value={this.state.lng} 
-          />
+        <div className="row">
+          <div className="col-4">
+            <div style={{
+              marginBottom: '20px'
+            }}>
 
-          lat:
-          <input
-            onChange={e => this.handleChange('lat', e.target.value)}
-            step=".01"
-            type="number"
-            value={this.state.lat}
-          />
+              <select 
+                id="date"
+                name="datepicker"
+                defaultValue={2}
+                onChange={e => this.handleDate(e.target.value)}
+              >
+                <option value={2}>Two months ago</option>
+                <option value={3}>Three months ago</option>
+                <option value={4}>Four months ago</option>
+                <option value={5}>Five months ago</option>
+                <option value={6}>Six months ago</option>
+                <option value={7}>Seven months ago</option>
+                <option value={8}>Eight months ago</option>
+                <option value={9}>Nine months ago</option>
+                <option value={10}>Ten months ago</option>
+              </select>
+            </div>
+            </div>
+            <div className="col-4" style={{textAlign: 'right'}}>
+              <button
+                onClick={e => {
+                  e.preventDefault()
+                  this.props.fetchCrimes(this.props.lat, this.props.lng, this.props.date, this.props.zoom)
 
-          <select 
-            id="date"
-            name="datepicker"
-            defaultValue={2}
-            onChange={e => this.handleDate(e.target.value)}
-          >
-            <option value={1}>Last month</option>
-            <option value={2}>Two months ago</option>
-            <option value={3}>Three months ago</option>
-            <option value={4}>Four months ago</option>
-            <option value={5}>Five months ago</option>
-            <option value={6}>Six months ago</option>
-            <option value={7}>Seven months ago</option>
-            <option value={8}>Eight months ago</option>
-            <option value={9}>Nine months ago</option>
-            <option value={10}>Ten months ago</option>
-          </select>
-        </div>
-        <div
-          style={{
-            marginBottom: '20px'
-          }}
-        >
-          {this.props.message}
+                }}
+              >Get Crime!</button>
+            </div>
+            <div className="col-2" style={{textAlign: 'center'}}>
+            <div
+              style={{
+                marginBottom: '20px'
+              }}
+            >
+            {this.props.message}
+            </div>
+          </div>
         </div>
 
         <div className="row">
           <div className="col-2">
-            <Map center={[this.state.lat, this.state.lng]} zoom={12} zoomControl={false}
-              onMoveend={e => this.handleMapMove(e)}
+            <Map center={[this.props.lat, this.props.lng]} 
+              minZoom={10}
+              zoom={this.props.zoom}
+              onMoveend={e => this.handleMapChange(e)}
+              onZoomend={e => this.handleMapChange(e)}
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -171,10 +145,10 @@ class Home extends React.Component {
                 labels: this.labelsByCategory(this.props.crime),
                 datasets: [{
                   label: 'Number of Crimes by Category',
-                    data: this.dataByCategory(this.props.crime),
-                    backgroundColor: '#95a8d4',
-                    borderColor: '#95a8d4',
-                    borderWidth: 1
+                  data: this.dataByCategory(this.props.crime),
+                  backgroundColor: '#95a8d4',
+                  borderColor: '#95a8d4',
+                  borderWidth: 1
                 }]
               }}
               options={{
@@ -196,7 +170,11 @@ export default connect(
     lng:     state.lng,
     lat:     state.lat,
     date:    state.date,
+    zoom:    state.zoom,
     message: state.message
   }),
-  { fetchCrimes }
+  {
+    updateParams, 
+    fetchCrimes
+  }
 )(Home)

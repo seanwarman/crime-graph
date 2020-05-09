@@ -4,6 +4,7 @@ const initialState = {
   lat: '51.4545',
   lng: '-2.5879',
   date: moment().subtract(2, 'months').format('YYYY-MM'),
+  zoom: 12,
   crime: [],
   message: '',
   fetching: false
@@ -17,6 +18,13 @@ export default function crimeGraph(state, action) {
   }
 
   switch(action.type) {
+    case 'UPDATE_PARAMS':
+      return Object.assign({}, state, {
+        lng:  action.lng,
+        lat:  action.lat,
+        date: action.date,
+        zoom: action.zoom
+      })
     case 'CRIME_REQUEST':
       return Object.assign({}, state, {
         lng:  action.lng,
