@@ -7,6 +7,7 @@ const initialState = {
   zoom: 12,
   crime: [],
   message: '',
+  selectedCat: null,
   fetching: false
 }
 
@@ -18,6 +19,10 @@ export default function crimeGraph(state, action) {
   }
 
   switch(action.type) {
+    case 'SELECT_CAT':
+      return Object.assign({}, state, {
+        selectedCat: action.selectedCat
+      })
     case 'UPDATE_PARAMS':
       return Object.assign({}, state, {
         lng:  action.lng,

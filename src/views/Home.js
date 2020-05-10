@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateParams, fetchCrimes } from '../actions'
-import { Bar, Pie } from 'react-chartjs-2'
+import { updateParams, fetchCrimes, chooseSelectedCat } from '../actions'
+import Chart, { Bar, Pie } from 'react-chartjs-2'
 import { Map, Marker, TileLayer } from 'react-leaflet'
 import './Home.css'
 import moment from 'moment'
@@ -9,12 +9,13 @@ import moment from 'moment'
 class Home extends React.Component {
   constructor(props) {
     super(props)
+    this.handleSelectCat = this.handleSelectCat.bind(this)
   }
 
   componentDidMount() {
 
-
     this.props.fetchCrimes(this.props.lat, this.props.lng, this.props.date, this.props.zoom)
+
   }
 
   labelsByCategory(crime) {
@@ -62,12 +63,32 @@ class Home extends React.Component {
 
   }
 
+  handleSelectCat(e) {
+
+    if((e[0] || {})._model) {
+      this.props.chooseSelectedCat(e[0]._model.label)
+    }
+
+  }
+
+  filterCrimeByCat(crime) {
+
+    if(this.props.selectedCat) crime = crime.filter(cr => (
+      cr.category === this.props.selectedCat
+    ))
+
+    return crime
+
+  }
 
   render() {
 
     return (
       <div>
-        <h1>Crime Graph</h1>
+        <div className="row">
+          <div className="col-2"><h1>Crime Graph</h1></div>
+          <div className="col-2"><h2>{this.props.selectedCat}</h2></div>
+        </div>
         <div className="row">
           <div className="col-4">
             <div style={{
@@ -127,7 +148,7 @@ class Home extends React.Component {
 
 
               {
-                (this.props.crime || []).map(cr => {
+                this.filterCrimeByCat((this.props.crime || [])).map(cr => {
                   return <Marker
                     key={cr.id}
                     position={[
@@ -151,6 +172,7 @@ class Home extends React.Component {
                   borderWidth: 1
                 }]
               }}
+              getElementAtEvent={this.handleSelectCat}
               options={{
                 startAtZero: true
               }}
@@ -171,10 +193,12 @@ export default connect(
     lat:     state.lat,
     date:    state.date,
     zoom:    state.zoom,
-    message: state.message
+    message: state.message,
+    selectedCat: state.selectedCat
   }),
   {
     updateParams, 
-    fetchCrimes
+    fetchCrimes,
+    chooseSelectedCat
   }
 )(Home)

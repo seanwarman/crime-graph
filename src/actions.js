@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+export function chooseSelectedCat(selectedCat) {
+  return {
+    type: 'SELECT_CAT',
+    selectedCat,
+  }
+}
+
 export function updateParams(lat, lng, date, zoom) {
   return {
     type: 'UPDATE_PARAMS',
