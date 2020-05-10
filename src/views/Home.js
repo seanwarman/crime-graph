@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { updateParams, fetchCrimes, chooseSelectedCat } from '../actions'
-import Chart, { Bar, Pie } from 'react-chartjs-2'
 import { Map, Marker, TileLayer } from 'react-leaflet'
+import { Bar, Pie } from 'react-chartjs-2'
+import { Map, Marker, TileLayer, Tooltip, Popup } from 'react-leaflet'
 import './Home.css'
 import moment from 'moment'
 
@@ -155,7 +156,12 @@ class Home extends React.Component {
                       cr.location.latitude,
                       cr.location.longitude
                     ]}
-                  />
+                  >
+                    <Popup>
+                      <p>{cr.category.split('-').map(word => word.slice(0,1).toUpperCase() + word.slice(1)).join(' ')}</p>
+                      <p>{cr.location.street.name}</p>
+                    </Popup>
+                  </Marker>
                 })
               }
             </Map>
