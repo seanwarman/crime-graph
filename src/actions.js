@@ -1,5 +1,11 @@
 import axios from 'axios'
 
+export function resetState() {
+  return {
+    type: 'RESET_STATE'
+  }
+}
+
 export function chooseSelectedCat(selectedCat) {
   return {
     type: 'SELECT_CAT',

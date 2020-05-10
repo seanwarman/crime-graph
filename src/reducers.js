@@ -19,6 +19,8 @@ export default function crimeGraph(state, action) {
   }
 
   switch(action.type) {
+    case 'RESET_STATE':
+      return initialState
     case 'SELECT_CAT':
       return Object.assign({}, state, {
         selectedCat: action.selectedCat
@@ -41,6 +43,7 @@ export default function crimeGraph(state, action) {
     case 'RECIEVE_CRIME':
       return Object.assign({}, state, {
         crime: action.crime,
+        selectedCat: undefined,
         fetching: false,
         message: action.crime.length > 0 ? 'Crime recieved!' : 'No crime ...or too soon to say.'
       })

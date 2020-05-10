@@ -95,11 +95,40 @@ footer {
 }
 
 .col-2 {
+  position: relative;
   width: 50%;
 }
 
 .col-4 {
+  position: relative;
   width: 25%;
+}
+
+.description {
+  position: absolute;
+  bottom: 0;
+}
+
+.selected-category {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+}
+
+.selected-category span {
+  background-color: #95a8d4;
+  border: 1px solid #d4e1ff;
+  padding: 0 5px;
+  color: white;
+  min-width: 95px;
+  font-size: .8em;
+  border: none;
+}
+
+.selected-category span:hover {
+  cursor: pointer;
 }
 
 #loading-text {

@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateParams, fetchCrimes, chooseSelectedCat } from '../actions'
-import { Map, Marker, TileLayer } from 'react-leaflet'
+import { updateParams, fetchCrimes, chooseSelectedCat, resetState } from '../actions'
 import { Bar, Pie } from 'react-chartjs-2'
-import { Map, Marker, TileLayer, Tooltip, Popup } from 'react-leaflet'
+import { Map, Marker, TileLayer, Popup } from 'react-leaflet'
+import locations from '../mixins/locations';
 import './Home.css'
 import moment from 'moment'
 
@@ -17,6 +17,10 @@ class Home extends React.Component {
 
     this.props.fetchCrimes(this.props.lat, this.props.lng, this.props.date, this.props.zoom)
 
+  }
+
+  componentWillUnmount() {
+    this.props.resetState()
   }
 
   labelsByCategory(crime) {
@@ -48,11 +52,12 @@ class Home extends React.Component {
 
     this.props.updateParams(lat, lng, this.props.date, zoom)
 
+  }
 
-    // Dont re-fetch if the lat and lng haven't changed.
-    // if(lat !== this.props.lat || lng !== this.props.lng) {
-    //   this.props.fetchCrimes(lat, lng, this.props.date, zoom)
-    // }
+  handleLocation(val) {
+
+    let { lat, lng } = locations[val]
+    this.props.fetchCrimes(lat, lng, this.props.date, 12)
 
   }
 
@@ -87,8 +92,13 @@ class Home extends React.Component {
     return (
       <div>
         <div className="row">
-          <div className="col-2"><h1>Crime Graph</h1></div>
-          <div className="col-2"><h2>{this.props.selectedCat}</h2></div>
+          <div className="col-2">
+            <h1>Crime Graph</h1>
+            <p>
+              Drag the map to any location and click <b>Get Crime</b><br />
+              Choose any of the chart's bars to filter crime by type
+            </p>
+          </div>
         </div>
         <div className="row">
           <div className="col-4">
@@ -112,24 +122,46 @@ class Home extends React.Component {
                 <option value={9}>Nine months ago</option>
                 <option value={10}>Ten months ago</option>
               </select>
+
+              <select 
+                id="locations"
+                name="locations"
+                defaultValue={'Bristol'}
+                style={{marginLeft: 5}}
+                onChange={e => this.handleLocation(e.target.value)}
+              >
+                {
+                  Object.keys(locations).map(town => (
+
+                    <option key={town} value={town}>{town.replace(/_/g, ' ')}</option>
+
+                  ))
+                }
+              </select>
             </div>
             </div>
             <div className="col-4" style={{textAlign: 'right'}}>
               <button
+                disabled={this.props.fetching}
                 onClick={e => {
                   e.preventDefault()
                   this.props.fetchCrimes(this.props.lat, this.props.lng, this.props.date, this.props.zoom)
 
                 }}
-              >Get Crime!</button>
+              >{this.props.fetching ? 'Fetching...' : 'Get Crime!'}</button>
             </div>
             <div className="col-2" style={{textAlign: 'center'}}>
-            <div
-              style={{
-                marginBottom: '20px'
-              }}
-            >
-            {this.props.message}
+            <div className="selected-category">
+              <span
+                onClick={() => this.props.chooseSelectedCat()}
+              >
+                {(this.props.selectedCat || 'All').split('-').map(word => word.slice(0,1).toUpperCase() + word.slice(1)).join(' ')}
+                {
+                  this.props.selectedCat && <span 
+                    style={{ marginLeft: 5 }}
+                  >X</span>
+                }
+              </span>
             </div>
           </div>
         </div>
@@ -194,17 +226,20 @@ class Home extends React.Component {
 
 export default connect(
   state => ({ 
-    crime:   state.crime,
-    lng:     state.lng,
-    lat:     state.lat,
-    date:    state.date,
-    zoom:    state.zoom,
-    message: state.message,
-    selectedCat: state.selectedCat
+    crime:       state.crime,
+    lng:         state.lng,
+    lat:         state.lat,
+    date:        state.date,
+    zoom:        state.zoom,
+    message:     state.message,
+    selectedCat: state.selectedCat,
+    locations:   state.locations,
+    fetching:    state.fetching
   }),
   {
     updateParams, 
     fetchCrimes,
+    resetState,
     chooseSelectedCat
   }
 )(Home)
