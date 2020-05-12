@@ -9,6 +9,8 @@ Start the app with `npm start`.
 
 Drag the map around and click the 'Get Crime!' button to fetch stats from other areas of the country.
 
+[See hosted example](http://crime-graph.s3-website-eu-west-1.amazonaws.com/)
+
 ## References
 
 - https://dev.to/vish448/create-react-project-without-create-react-app-3goh
